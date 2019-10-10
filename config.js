@@ -3,8 +3,8 @@ module.exports = {
 
   session: {
     key: "session-key",
-    maxAge: 5000,
-    httpOnly: false,
+    maxAge: 86400000,
+    httpOnly: true,
     renew: true
   },
 
