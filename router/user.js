@@ -12,6 +12,10 @@ router.get("/", async ctx=>{
   ctx.body = res
 })
 
+router.post("/test", async ctx => {
+  ctx.body = "hahah"
+})
+
 // 登录处理
 router.post("/login", async ctx=>{
   let {user, password} = ctx.request.body
