@@ -86,11 +86,14 @@ router.post("/addmusic", async ctx => {
   if (!ctx.request.body.music && dID) {
 
     // 读取文章原来的音乐列表
-    let res = await db.cSelect(["music"], "diarys", {dID})
+    let res = await db.cSelect(["music", "has"], "diarys", {dID})
     res = res[0].music
+    let has = (res[0].has && JSON.parse(res[0].has)) || {}
+    has["music"] = "#2ecc71"
+    has = JSON.stringify(has)
 
     // 如果存在音乐列表，则进行合并操作，否则新添加
-    if (res) {
+    if (res && res !== "null") {
       // 合并新旧音乐列表
       let newMusicList = []
       res = Array.from(JSON.parse(res))
@@ -99,7 +102,7 @@ router.post("/addmusic", async ctx => {
       newMusicList = JSON.stringify(res.concat(musicList))
       
       try {
-        await db.cUpdate({music: newMusicList}, "diarys", `dID = "${dID}"`)
+        await db.cUpdate({music: newMusicList, has}, "diarys", `dID = "${dID}"`)
         ctx.body = {result: 1, message: "添加成功"}
       } catch (err) {
         ctx.body = {result: 0, message: "添加失败"}
@@ -107,7 +110,7 @@ router.post("/addmusic", async ctx => {
       }
     } else {
       try {
-        await db.cUpdate({music: musicList}, "diarys", `dID = "${dID}"`)
+        await db.cUpdate({music: musicList, has}, "diarys", `dID = "${dID}"`)
         ctx.body = {result: 1, message: "添加成功"}
       } catch (err) {
         ctx.body = {result: 0, message: "添加失败"}
@@ -144,8 +147,7 @@ function analyze (ctx) {
     let bug = /bug/i
     if (bug.test(data)) ctBody.has["bug"] = "#ff4757"
 
-    // 解析 "music"
-    // if (data.)
+    // 音乐添加不同属其它一个API，所以音乐icon的添加单独分开
 
     // 解析 "code"
     let code = /<pre>(.|\n)+<\/pre>/i
