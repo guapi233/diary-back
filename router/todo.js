@@ -2,7 +2,14 @@ const router = require("koa-router")()
 const db = require("../lib/mysql")
 
 router.get("/", async ctx => {
-  let res = await db.cSelect("*", "todo")
+  let {limit} = ctx.request.query
+  let res = null
+  if (limit) {
+    res = await db.cSelect("*", "todo", {state: "待做"}, {limit: `0,${limit}`})
+  } else {
+    res = await db.cSelect("*", "todo")
+  }
+  
 
   if (res[0]) {
     ctx.body = {result: 1, data: res}
