@@ -14,7 +14,7 @@ const server = new Koa()
 const router = new Router()
 
 // machining
-server.use(async (ctx, next)=>{
+server.use(async (ctx, next) => {
   
   await next()
 })

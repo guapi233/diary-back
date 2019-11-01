@@ -6,5 +6,6 @@ router.get("/", async ctx=>{
 
 router.use("/user", require("./user"))
 router.use("/diary", require("./diary"))
+router.use("/todo", require("./todo"))
 
 module.exports = router.routes()
