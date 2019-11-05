@@ -16,6 +16,7 @@ router.get("/", async ctx => {
         ctx.body = {result: 0, message: "当日还没有创建日记"}
       }
     }catch (err) {
+      console.log(err)
       ctx.body = {result: 0, message: "当日还没有创建日记"}
     }
     // 无时间条件请求全部日记
